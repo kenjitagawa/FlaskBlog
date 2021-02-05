@@ -20,7 +20,7 @@
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="/">Flask Blog</a>
+          <a class="navbar-brand mr-4" href="/">MEK</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -32,8 +32,13 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               {% if current_user.is_authenticated  %}
+                <a class="nav-item nav-link" href="{{ url_for('new_post') }}">New Post</a>
                 <a class="nav-item nav-link" href="{{ url_for('account') }}">Account</a>
                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                <a href="{{ url_for('user_posts', username=current_user.username)}}" class="navbar-brand">
+                  <img src="{{ url_for('static', filename='profile_pictures/' + current_user.image_file)  }}" class="rounded-circle nav-img ml-2" width="36" height="36"> 
+                  
+                </a>
               {% else %}
                 <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
                 <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>

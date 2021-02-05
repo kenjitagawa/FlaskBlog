@@ -1,16 +1,44 @@
 
 {% extends "layout.html" %}
 {% block content %}
-    {% for post in posts %}
+  {% if current_user.is_authenticated %}
+    <div class="card">
+      <h1 class="article-title ml-5 mt-3">Hello {{ current_user.username  }}! Here is the latest!</h1>
+      {% for post in posts.items %}
+          <article class="media content-section m-4">
+            <img src="{{ url_for('static', filename='profile_pictures/' + post.author.image_file)  }}" class="rounded-circle article-img"> 
+            <div class="media-body">
+              <div class="article-metadata">
+                <a class="mr-2" href="{{ url_for('user_posts', username=post.author.username)}}">{{ post.author.username }}</a>
+                <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d')}}</small>
+              </div>
+              <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
+              <p class="article-content">{{ post.content }}</p>
+            </div>
+          </article>
+      {% endfor %}
+    </div>
+    <!-- <div class="card mt-2"> -->
+      {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+          {% if page_num %}
+            {% if posts.page == page_num %}
+            <a href="{{ url_for('home', page=page_num) }}" class="btn btn-secondary mb-4">{{ page_num }}</a>
+            {% else %}
+            <a href="{{ url_for('home', page=page_num) }}" class="btn btn-dark mb-4">{{ page_num }}</a>
+            {% endif %}
+          {% else %}
+          {% endif %}
+        {% endfor %} 
+      <!-- </div> -->
+    {% else  %} 
         <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="#">{{ post.author }}</a>
-              <small class="text-muted">{{ post.date_posted }}</small>
+              <small class="text-muted">Kenji</small>
             </div>
-            <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content }}</p>
+            <h1 class="article-title">Hello World!</h1>
+            <h4 class="mr-2">This is a simple Flask Blog! To see something other than this message, either <a href="{{ url_for('login')  }}">Log-In</a> or <a href="{{ url_for('register') }}">Register now!</a>></h4>
           </div>
         </article>
-    {% endfor %}
+    {% endif %}
 {% endblock content %}

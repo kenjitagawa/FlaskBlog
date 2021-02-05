@@ -1,12 +1,30 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from pyblog.models import User
 
+"""
+This the the python file that handles all of the forms within the website. It contains, the RegistrationForm, the LoginForm and the UpdateAccForm classes that contain the logic for the handling of information. 
+
+"""
 
 class RegistrationForm(FlaskForm):
+    
+    """
+    The registration form will take the information from the form in the HTML and process the information. Here it takes the following fields: 
+    - Username
+    - Email
+    - Password
+    - Password Confirmation
+    - Submit Button
+    
+    It also contains the two following methods:
+    - validate_username => expects username
+    - validate_email => expects email
+    """
+    
     username = StringField('Username',validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
@@ -27,12 +45,34 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('That email is taken. Please choose another one.')
 
 class LoginForm(FlaskForm):
+    
+    """
+    The LoginForm class will take the information from the form in the HTML and process the information. Here it takes the following fields: 
+    - Email
+    - Password
+    - Remember Me
+    - Submit Button
+    """
+    
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
     
 class UpdateAccForm(FlaskForm):
+    
+    """
+    The UpdateAccForm class will take the information from the form in the HTML and process the information. Here it takes the following fields: 
+    - Username
+    - Email
+    - Picture
+    - Submit Button
+    
+    It also contains the two following methods:
+    - validate_username => expects username
+    - validate_email => expects email
+    """
+    
     username = StringField('Username',validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
@@ -56,3 +96,25 @@ class UpdateAccForm(FlaskForm):
             
             if email:
                 raise ValidationError('That email is taken. Please choose another one.')
+
+class PostForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()])
+    submit = SubmitField('Send Me An Email!')
+    
+    def validate_email(self, email):
+        email = User.query.filter_by(email=email.data).first()
+        
+        if email is None:
+            raise ValidationError('That email doesn\'t have an account!')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password',validators=[DataRequired(), EqualTo('password')])
+    
+    submit = SubmitField('Reset Password')
