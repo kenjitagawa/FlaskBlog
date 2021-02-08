@@ -1,14 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from flask_login import current_user
 from pyblog.models import User
-
-"""
-This the the python file that handles all of the forms within the website. It contains, the RegistrationForm, the LoginForm and the UpdateAccForm classes that contain the logic for the handling of information. 
-
-"""
 
 class RegistrationForm(FlaskForm):
     
@@ -59,7 +54,7 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
     
-class UpdateAccForm(FlaskForm):
+class UpdateAccountForm(FlaskForm):
     
     """
     The UpdateAccForm class will take the information from the form in the HTML and process the information. Here it takes the following fields: 
@@ -96,11 +91,6 @@ class UpdateAccForm(FlaskForm):
             
             if email:
                 raise ValidationError('That email is taken. Please choose another one.')
-
-class PostForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validators=[DataRequired()])
-    submit = SubmitField('Submit')
 
 class RequestResetForm(FlaskForm):
     email = StringField('Email',
