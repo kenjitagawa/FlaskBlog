@@ -1,3 +1,0 @@
-[submodule "FlaskBlog"]
-	path = FlaskBlog
-	url = git@github.com:kenjitagawa/FlaskBlog.git
