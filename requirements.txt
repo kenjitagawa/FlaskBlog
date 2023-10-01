@@ -1,4 +1,4 @@
-astroid==2.12.13
+astroid==2.15.8
 bcrypt==3.2.2
 blinker==1.5
 cffi==1.15.1
