@@ -1,7 +1,7 @@
 astroid==2.15.8
 bcrypt==3.2.2
 blinker==1.6.2
-cffi==1.15.1
+cffi==1.16.0
 click==7.1.2
 colorama==0.4.6
 dnspython==2.2.1
